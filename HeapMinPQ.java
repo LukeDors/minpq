@@ -28,14 +28,13 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        pq.add(new PriorityNode<T>(item, priority));
     }
 
     @Override
     public boolean contains(T item) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        PriorityNode<T> node = new PriorityNode(item, 0);
+        return pq.contains(node);
     }
 
     @Override
@@ -43,8 +42,8 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        assert pq.peek() != null;
+        return pq.peek().item;
     }
 
     @Override
@@ -52,8 +51,8 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        PriorityNode<T> removed = new PriorityNode(pq.poll(), 0);
+        return removed.item;
     }
 
     @Override
@@ -61,13 +60,19 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (!contains(item)) {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        PriorityQueue<PriorityNode<T>> pq1 = pq;
+        PriorityQueue<PriorityNode<T>> pq2 = null;
+        while (!pq1.isEmpty()) {
+            PriorityNode<T> index = pq.poll();
+            if(index.item == item) {
+                index.setPriority(priority);
+            }
+            pq2.add(index);
+        }
     }
 
     @Override
     public int size() {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return pq.size();
     }
 }

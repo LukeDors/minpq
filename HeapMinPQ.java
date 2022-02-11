@@ -69,6 +69,7 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             }
             pq2.add(index);
         }
+        pq = pq2;
     }
 
     @Override

@@ -28,14 +28,13 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        items.add(new PriorityNode<>(item, priority));
     }
 
     @Override
     public boolean contains(T item) {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        PriorityNode<T> node = new PriorityNode(item, 0);
+        return items.contains(node);
     }
 
     @Override
@@ -43,8 +42,15 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        double minPriority = items.get(0).priority();
+        PriorityNode<T> node = items.get(0);
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).priority() < minPriority) {
+                minPriority = items.get(i).priority();
+                node = items.get(i);
+            }
+        }
+        return node.item();
     }
 
     @Override
@@ -52,8 +58,16 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        double minPriority = items.get(0).priority();
+        PriorityNode<T> node = items.get(0);
+        for (int i = 0; i < items.size(); i++) {
+            if (items.get(i).priority() < minPriority) {
+                minPriority = items.get(i).priority();
+                node = items.get(i);
+            }
+        }
+        items.remove(node);
+        return node.item();
     }
 
     @Override
@@ -61,13 +75,13 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (!contains(item)) {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        int index = items.indexOf(item);
+        PriorityNode<T> node = new PriorityNode<>(item, priority);
+        items.set(index, node);
     }
 
     @Override
     public int size() {
-        // TODO: Replace with your code
-        throw new UnsupportedOperationException("Not implemented yet");
+        return items.size();
     }
 }

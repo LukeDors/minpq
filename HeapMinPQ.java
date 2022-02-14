@@ -23,7 +23,7 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         pq = new PriorityQueue<>(Comparator.comparingDouble(PriorityNode::priority));
     }
 
-    @Override
+   @Override
     public void add(T item, double priority) {
         if (contains(item)) {
             throw new IllegalArgumentException("Already contains " + item);
@@ -33,7 +33,7 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     @Override
     public boolean contains(T item) {
-        PriorityNode<T> node = new PriorityNode(item, 0);
+        PriorityNode<T> node = new PriorityNode<T>(item, 0);
         return pq.contains(node);
     }
 
@@ -43,7 +43,7 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             throw new NoSuchElementException("PQ is empty");
         }
         assert pq.peek() != null;
-        return pq.peek().item;
+        return pq.peek().item();
     }
 
     @Override
@@ -51,8 +51,10 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        PriorityNode<T> removed = new PriorityNode(pq.poll(), 0);
-        return removed.item;
+        PriorityNode<T> removed;
+        removed = pq.poll();
+        assert removed != null;
+        return removed.item();
     }
 
     @Override
@@ -61,10 +63,11 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
         PriorityQueue<PriorityNode<T>> pq1 = pq;
-        PriorityQueue<PriorityNode<T>> pq2 = null;
+        PriorityQueue<PriorityNode<T>> pq2 = new PriorityQueue<>(Comparator.comparingDouble(PriorityNode::priority));
         while (!pq1.isEmpty()) {
             PriorityNode<T> index = pq.poll();
-            if(index.item == item) {
+            assert index != null;
+            if(index.item() == item) {
                 index.setPriority(priority);
             }
             pq2.add(index);

@@ -75,9 +75,13 @@ public class UnsortedArrayMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (!contains(item)) {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
-        int index = items.indexOf(item);
-        PriorityNode<T> node = new PriorityNode<>(item, priority);
-        items.set(index, node);
+        for (PriorityNode<T> itemNode : items) {
+            T target = itemNode.item();
+            if (target.equals(item)) {
+                itemNode.setPriority(priority);
+                break;
+            }
+        }
     }
 
     @Override

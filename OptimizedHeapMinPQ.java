@@ -64,7 +64,7 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (isEmpty()) {
             throw new NoSuchElementException("PQ is empty");
         }
-        T min = peekMin();
+        T min = items.get(1).item();
         swap(1, size);
         items.remove(size);
         size--;
@@ -82,8 +82,8 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         items.get(index).setPriority(priority);
         swim(index);
         sink(index);
-        int index1 = items.indexOf(new PriorityNode<>(item, 0));
-        itemToIndex.put(item, index1);
+        index = items.indexOf(new PriorityNode<>(item, 0));
+        itemToIndex.put(item, index);
     }
 
     @Override
@@ -96,19 +96,20 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             int parentIndex = index / 2;
             if (needSwap(parentIndex, index)) {
                 swap(parentIndex, index);
+            } else {
+                return;
             }
             index = parentIndex;
         }
     }
 
     private boolean needSwap(int i, int p) {
-        boolean condition1 = 0 < i && i <= size;
-        boolean condition2 = 0 < p && p <= size;
-        if (condition1 || condition2) {
-            return condition1;
-        } else if (condition1 && condition2) {
-            return items.get(i).priority() > items.get(p).priority();
-        } else {
+        if (0 < i && i <= size) {
+            if (0 < p && p <= size) {
+                return items.get(i).priority() > items.get(p).priority();
+            }
+            return true;
+        } else{
             return false;
         }
     }
@@ -116,15 +117,14 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private void swap(int i, int p) {
         itemToIndex.put(items.get(i).item(), p);
         itemToIndex.put(items.get(p).item(), i);
-        PriorityNode current = items.get(i);
+        PriorityNode<T> current = items.get(i);
         items.set(i, items.get(p));
         items.set(p, current);
     }
 
     private void sink(int index) {
-        int indicator = 1 * index;
-        while (indicator <= size) {
-            int left = indicator;
+        while (2 * index <= size) {
+            int left = 2 * index;
             int right = left + 1;
             int current = left;
             if (right <= size && needSwap(left, right)) {
@@ -132,6 +132,8 @@ public class OptimizedHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             }
             if (needSwap(index, current)) {
                 swap(index, current);
+            } else {
+                break;
             }
             index = current;
         }

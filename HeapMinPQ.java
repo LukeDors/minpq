@@ -57,22 +57,20 @@ public class HeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         return removed.item();
     }
 
-    @Override
-    public void changePriority(T item, double priority) {
+   @Override
+   public void changePriority(T item, double priority) {
         if (!contains(item)) {
             throw new NoSuchElementException("PQ does not contain " + item);
         }
-        PriorityQueue<PriorityNode<T>> pq1 = pq;
-        PriorityQueue<PriorityNode<T>> pq2 = new PriorityQueue<>(Comparator.comparingDouble(PriorityNode::priority));
-        while (!pq1.isEmpty()) {
+        int size = size();
+        for (int i = 0; i < size; i++) {
             PriorityNode<T> index = pq.poll();
             assert index != null;
             if(index.item() == item) {
                 index.setPriority(priority);
             }
-            pq2.add(index);
+            pq.add(index);
         }
-        pq = pq2;
     }
 
     @Override
